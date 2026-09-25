@@ -1,0 +1,65 @@
+{
+  "id": 49831968,
+  "text": null,
+  "children": [
+    {
+      "id": 49832234,
+      "text": "This is very good to see. Classic F-Droid always seemed to fail at updating repos at least every week or so.",
+      "children": [
+        {
+          "id": 49832418,
+          "text": "Repo timestamp expected blah blah... toast coming out of nowhere is such a bad design. Really, the architecture in which you absolutely have to download the multi-MB index is as well.",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 49832268,
+      "text": "The official page still downloads 1.23.2. I wonder when this will go live, and if the old app will auto-update.",
+      "children": [
+        {
+          "id": 49832611,
+          "text": "Try F-Droid basic, it has this for a few weeks.",
+          "children": []
+        },
+        {
+          "id": 49837089,
+          "text": "Right yeah, I saw this announcement, opened my Fdroid app and clicked around very confused on how to get it to update :S",
+          "children": [
+            {
+              "id": 49838965,
+              "text": "Same! At the bottom I saw 2.0 was available but 1.23.2 was still marker as &quot;suggested&quot;. I had to manually expand 2.0 and install it",
+              "children": []
+            },
+            {
+              "id": 49841999,
+              "text": "Here&#x27;s the link someone shared in reddit<p><a href=\"https:&#x2F;&#x2F;f-droid.org&#x2F;repo&#x2F;org.fdroid.fdroid_2000050.apk\" rel=\"nofollow\">https:&#x2F;&#x2F;f-droid.org&#x2F;repo&#x2F;org.fdroid.fdroid_2000050.apk</a>",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 49832269,
+      "text": "That page uses the term &#x27;&#x27;repository&#x27;&#x27;&#x27; singular. Can additional repos be added in the way Neo Store allows?",
+      "children": [
+        {
+          "id": 49832307,
+          "text": "Yes. F-droid allows that, you can have multiple repositories and ... a few of those even exist :)<p>I&#x27;m using that with 2.0 (or rather with F-droid Basic, but I noticed Basic was updated to the same that is described in article, but a while ago). It works just fine.",
+          "children": []
+        },
+        {
+          "id": 49832330,
+          "text": "It&#x27;s always been possible on F-Droid, I doubt they would change something like that.",
+          "children": []
+        },
+        {
+          "id": 49842407,
+          "text": "Of course. Don&#x27;t even need F-Droid 2.0 for it. Fdroid 1 still supports multiple repos",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

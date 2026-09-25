@@ -1,0 +1,44 @@
+{
+  "hits": [
+    {
+      "objectID": "49831968",
+      "title": "F-Droid 2.0",
+      "url": "https://f-droid.org/2026/09/24/f-droid-2.0-a-new-chapter-for-android-freedom.html",
+      "points": 1328,
+      "num_comments": 380,
+      "created_at_i": 1790263572
+    },
+    {
+      "objectID": "49841563",
+      "title": "Dutch governments builds alternative for Microsoft based on NixOS",
+      "url": "https://www.dawo.community/en/",
+      "points": 566,
+      "num_comments": 304,
+      "created_at_i": 1790323609
+    },
+    {
+      "objectID": "49832938",
+      "title": "Why is the liver so weirdly regenerative?",
+      "url": "https://dynomight.substack.com/p/liver",
+      "points": 466,
+      "num_comments": 238,
+      "created_at_i": 1790266980
+    },
+    {
+      "objectID": "49833867",
+      "title": "Show HN: Whiteboard (YC W26) – An open-source IDE for thoughtful software design",
+      "url": "https://github.com/devdotfast/whiteboard",
+      "points": 344,
+      "num_comments": 124,
+      "created_at_i": 1790270496
+    },
+    {
+      "objectID": "49836374",
+      "title": "Opus 5.5 is good at explainer videos",
+      "url": "https://launchvideo.io",
+      "points": 316,
+      "num_comments": 175,
+      "created_at_i": 1790281727
+    }
+  ]
+}
