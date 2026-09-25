@@ -1,17 +1,38 @@
 import { describe, expect, it } from "vitest";
 import { buildDigest, type GeneratedItem } from "../src/digest";
-import { escapeHtml, renderDayHtml, renderIndexHtml, renderJson } from "../src/render";
+import {
+  escapeHtml,
+  renderDayHtml,
+  renderIndexHtml,
+  renderJson,
+} from "../src/render";
 
 const item: GeneratedItem = {
-  candidate: { hnId: 42, title: "Orig <b>", url: "https://a.test/x?a=1&b=2", points: 10, commentCount: 3 },
-  summary: { titleJa: "<script>alert(1)</script>", summaryJa: "要約 & more", discussionPointsJa: ["論点A", "論点B"] },
+  candidate: {
+    hnId: 42,
+    title: "Orig <b>",
+    url: "https://a.test/x?a=1&b=2",
+    points: 10,
+    commentCount: 3,
+  },
+  summary: {
+    titleJa: "<script>alert(1)</script>",
+    summaryJa: "要約 & more",
+    discussionPointsJa: ["論点A", "論点B"],
+  },
   sourceStatus: "full",
 };
-const digest = buildDigest({ now: new Date("2026-09-25T10:00:00Z"), baseUrl: "https://u.github.io/hn", items: [item] });
+const digest = buildDigest({
+  now: new Date("2026-09-25T10:00:00Z"),
+  baseUrl: "https://u.github.io/hn",
+  items: [item],
+});
 
 describe("escapeHtml", () => {
   it("5 文字をエスケープ", () => {
-    expect(escapeHtml(`<a href="x">'&'</a>`)).toBe("&lt;a href=&quot;x&quot;&gt;&#39;&amp;&#39;&lt;/a&gt;");
+    expect(escapeHtml(`<a href="x">'&'</a>`)).toBe(
+      "&lt;a href=&quot;x&quot;&gt;&#39;&amp;&#39;&lt;/a&gt;",
+    );
   });
 });
 
@@ -45,7 +66,13 @@ describe("renderDayHtml", () => {
     const d = buildDigest({
       now: new Date("2026-09-25T10:00:00Z"),
       baseUrl: "https://u.github.io/hn",
-      items: [{ ...item, candidate: { ...item.candidate, url: null }, sourceStatus: "unavailable" }],
+      items: [
+        {
+          ...item,
+          candidate: { ...item.candidate, url: null },
+          sourceStatus: "unavailable",
+        },
+      ],
     });
     const h = renderDayHtml(d);
     expect(h).toContain("本文を取得できなかったため");

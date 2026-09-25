@@ -18,13 +18,25 @@ async function main() {
   if (existsSync(".env")) process.loadEnvFile(".env");
 
   const config = loadConfig();
-  const fetchFn = values["save-fixtures"] ? recordingFetch(fetch, "test/fixtures/recorded") : fetch;
-  const summarize = values["fake-llm"] ? fakeSummarizer : createClaudeSummarizer(new Anthropic(), config.model);
+  const fetchFn = values["save-fixtures"]
+    ? recordingFetch(fetch, "test/fixtures/recorded")
+    : fetch;
+  const summarize = values["fake-llm"]
+    ? fakeSummarizer
+    : createClaudeSummarizer(new Anthropic(), config.model);
   const outDir = values["dry-run"] ? "tmp" : "public";
 
-  const digest = await generateDigest({ fetchFn, summarize, now: new Date(), config, log: console.log });
+  const digest = await generateDigest({
+    fetchFn,
+    summarize,
+    now: new Date(),
+    config,
+    log: console.log,
+  });
   await publish(outDir, digest);
-  console.log(`wrote ${digest.items.length} items for ${digest.date} to ${outDir}/`);
+  console.log(
+    `wrote ${digest.items.length} items for ${digest.date} to ${outDir}/`,
+  );
 }
 
 main().catch((e) => {

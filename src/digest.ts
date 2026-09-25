@@ -11,10 +11,18 @@ export function dayPath(date: string): string {
   return date.replaceAll("-", "/");
 }
 
-export type GeneratedItem = { candidate: Candidate; summary: Summary; sourceStatus: SourceStatus };
+export type GeneratedItem = {
+  candidate: Candidate;
+  summary: Summary;
+  sourceStatus: SourceStatus;
+};
 
 /** 生成結果を Digest にまとめて検証する。不正なら throw（壊れたデータは公開しない） */
-export function buildDigest(args: { now: Date; baseUrl: string; items: GeneratedItem[] }): Digest {
+export function buildDigest(args: {
+  now: Date;
+  baseUrl: string;
+  items: GeneratedItem[];
+}): Digest {
   const date = jstDate(args.now);
   const detailUrl = `${args.baseUrl}/${dayPath(date)}.html`;
   return Digest.parse({

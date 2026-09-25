@@ -7,7 +7,9 @@ export type SourceStatus = z.infer<typeof SourceStatus>;
 export const Summary = z.object({
   titleJa: z.string().describe("タイトルの自然な日本語訳"),
   summaryJa: z.string().describe("記事の日本語要約（3〜4 文）"),
-  discussionPointsJa: z.array(z.string()).describe("コメント欄の主な論点（日本語で 3〜5 個）"),
+  discussionPointsJa: z
+    .array(z.string())
+    .describe("コメント欄の主な論点（日本語で 3〜5 個）"),
 });
 export type Summary = z.infer<typeof Summary>;
 

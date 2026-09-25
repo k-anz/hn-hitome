@@ -18,7 +18,11 @@ export type StoryDetail = { text: string | null; comments: CommentNode[] };
 const DEFAULT_RETRY: RetryOptions = { retries: 3, baseDelayMs: 1000 };
 
 /** GET して JSON を返す。5xx・429・通信エラーは指数バックオフでリトライする */
-export async function fetchJson(fetchFn: Fetch, url: string, retry = DEFAULT_RETRY): Promise<unknown> {
+export async function fetchJson(
+  fetchFn: Fetch,
+  url: string,
+  retry = DEFAULT_RETRY,
+): Promise<unknown> {
   let lastError: unknown;
   for (let attempt = 0; attempt <= retry.retries; attempt++) {
     if (attempt > 0) await sleep(retry.baseDelayMs * 2 ** (attempt - 1));
@@ -59,7 +63,11 @@ export async function fetchCandidates(
     numericFilters: `created_at_i>${since}`,
     hitsPerPage: "50",
   });
-  const json = await fetchJson(fetchFn, `https://hn.algolia.com/api/v1/search?${params}`, retry);
+  const json = await fetchJson(
+    fetchFn,
+    `https://hn.algolia.com/api/v1/search?${params}`,
+    retry,
+  );
   return AlgoliaSearch.parse(json)
     .hits.map((h) => ({
       hnId: Number(h.objectID),
@@ -87,7 +95,10 @@ const AlgoliaNode = z.object({
 type AlgoliaNode = z.infer<typeof AlgoliaNode>;
 
 function toCommentNode(node: AlgoliaNode): CommentNode {
-  return { text: node.text ?? null, children: node.children.map(toCommentNode) };
+  return {
+    text: node.text ?? null,
+    children: node.children.map(toCommentNode),
+  };
 }
 
 /**
@@ -100,12 +111,16 @@ export async function fetchStoryDetail(
   retry?: RetryOptions,
 ): Promise<StoryDetail> {
   const [item, tree] = await Promise.all([
-    fetchJson(fetchFn, `https://hacker-news.firebaseio.com/v0/item/${hnId}.json`, retry).then((j) =>
-      HnItem.parse(j),
-    ),
-    fetchJson(fetchFn, `https://hn.algolia.com/api/v1/items/${hnId}`, retry).then((j) =>
-      AlgoliaNode.parse(j),
-    ),
+    fetchJson(
+      fetchFn,
+      `https://hacker-news.firebaseio.com/v0/item/${hnId}.json`,
+      retry,
+    ).then((j) => HnItem.parse(j)),
+    fetchJson(
+      fetchFn,
+      `https://hn.algolia.com/api/v1/items/${hnId}`,
+      retry,
+    ).then((j) => AlgoliaNode.parse(j)),
   ]);
   const order = new Map((item.kids ?? []).map((id, i) => [id, i]));
   const topLevel = tree.children

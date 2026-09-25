@@ -17,9 +17,14 @@ const hits = [1, 2, 3, 4].map((id) => ({
 }));
 
 function routes() {
-  const r: Record<string, unknown> = { "https://hn.algolia.com/api/v1/search": { hits } };
+  const r: Record<string, unknown> = {
+    "https://hn.algolia.com/api/v1/search": { hits },
+  };
   for (const { objectID } of hits) {
-    r[`https://hacker-news.firebaseio.com/v0/item/${objectID}.json`] = { text: `<p>body ${objectID}`, kids: [10] };
+    r[`https://hacker-news.firebaseio.com/v0/item/${objectID}.json`] = {
+      text: `<p>body ${objectID}`,
+      kids: [10],
+    };
     r[`https://hn.algolia.com/api/v1/items/${objectID}`] = {
       id: Number(objectID),
       children: [{ id: 10, text: "a comment", children: [] }],
@@ -36,9 +41,20 @@ const okSummarizer: Summarizer = async (input) => ({
 
 describe("generateDigest", () => {
   it("ポイント上位から itemCount 本作る", async () => {
-    const d = await generateDigest({ fetchFn: fakeFetch(routes()), summarize: okSummarizer, now, config, log: () => {}, retry });
+    const d = await generateDigest({
+      fetchFn: fakeFetch(routes()),
+      summarize: okSummarizer,
+      now,
+      config,
+      log: () => {},
+      retry,
+    });
     expect(d.items.map((i) => i.hnId)).toEqual([1, 2]);
-    expect(d.items[0]).toMatchObject({ sourceStatus: "hn_text", summaryJa: "body 1", discussionPointsJa: ["- a comment"] });
+    expect(d.items[0]).toMatchObject({
+      sourceStatus: "hn_text",
+      summaryJa: "body 1",
+      discussionPointsJa: ["- a comment"],
+    });
   });
 
   it("失敗した記事は飛ばして次の候補で補充する（順位はポイント順のまま）", async () => {
@@ -47,7 +63,14 @@ describe("generateDigest", () => {
       return okSummarizer(input);
     };
     const logs: string[] = [];
-    const d = await generateDigest({ fetchFn: fakeFetch(routes()), summarize, now, config, log: (m) => logs.push(m), retry });
+    const d = await generateDigest({
+      fetchFn: fakeFetch(routes()),
+      summarize,
+      now,
+      config,
+      log: (m) => logs.push(m),
+      retry,
+    });
     expect(d.items.map((i) => i.hnId)).toEqual([2, 3]);
     expect(d.items.map((i) => i.rank)).toEqual([1, 2]);
     expect(logs.join("\n")).toContain("boom");
@@ -56,7 +79,14 @@ describe("generateDigest", () => {
   it("HN API が落ちている記事もスキップ対象", async () => {
     const r = routes();
     delete r["https://hn.algolia.com/api/v1/items/2"];
-    const d = await generateDigest({ fetchFn: fakeFetch(r), summarize: okSummarizer, now, config, log: () => {}, retry });
+    const d = await generateDigest({
+      fetchFn: fakeFetch(r),
+      summarize: okSummarizer,
+      now,
+      config,
+      log: () => {},
+      retry,
+    });
     expect(d.items.map((i) => i.hnId)).toEqual([1, 3]);
   });
 
@@ -65,7 +95,14 @@ describe("generateDigest", () => {
       if (input.title !== "Story 4") throw new Error("boom");
       return okSummarizer(input);
     };
-    const d = await generateDigest({ fetchFn: fakeFetch(routes()), summarize, now, config, log: () => {}, retry });
+    const d = await generateDigest({
+      fetchFn: fakeFetch(routes()),
+      summarize,
+      now,
+      config,
+      log: () => {},
+      retry,
+    });
     expect(d.items.map((i) => i.hnId)).toEqual([4]);
   });
 
@@ -74,13 +111,27 @@ describe("generateDigest", () => {
       throw new Error("boom");
     };
     await expect(
-      generateDigest({ fetchFn: fakeFetch(routes()), summarize, now, config, log: () => {}, retry }),
+      generateDigest({
+        fetchFn: fakeFetch(routes()),
+        summarize,
+        now,
+        config,
+        log: () => {},
+        retry,
+      }),
     ).rejects.toThrow("no items");
   });
 
   it("候補の取得に失敗したら throw", async () => {
     await expect(
-      generateDigest({ fetchFn: fakeFetch({}), summarize: okSummarizer, now, config, log: () => {}, retry }),
+      generateDigest({
+        fetchFn: fakeFetch({}),
+        summarize: okSummarizer,
+        now,
+        config,
+        log: () => {},
+        retry,
+      }),
     ).rejects.toThrow();
   });
 });

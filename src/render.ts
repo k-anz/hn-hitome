@@ -1,7 +1,13 @@
 import { dayPath } from "./digest";
 import type { Digest, DigestItem } from "./schema";
 
-const ESCAPES: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+const ESCAPES: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
 
 export function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ESCAPES[c]!);
@@ -55,7 +61,9 @@ function renderItem(item: DigestItem): string {
     item.sourceStatus === "unavailable"
       ? `<p class="note">※本文を取得できなかったため、タイトルとコメントからの要約です</p>`
       : "";
-  const articleLink = item.articleUrl ? `<a href="${escapeHtml(item.articleUrl)}">元記事</a>` : "";
+  const articleLink = item.articleUrl
+    ? `<a href="${escapeHtml(item.articleUrl)}">元記事</a>`
+    : "";
   return `<article id="${item.hnId}">
 <h2>${escapeHtml(item.titleJa)}</h2>
 <p class="orig">${escapeHtml(item.titleOriginal)}</p>
@@ -94,5 +102,8 @@ ${d.items.map((i) => `<li>${escapeHtml(i.titleJa)}</li>`).join("\n")}
 </article>`,
     )
     .join("\n");
-  return page("HN ひとめ", `<header><h1>HN ひとめ</h1><p>これまでのダイジェスト</p></header>\n${entries}`);
+  return page(
+    "HN ひとめ",
+    `<header><h1>HN ひとめ</h1><p>これまでのダイジェスト</p></header>\n${entries}`,
+  );
 }

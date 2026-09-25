@@ -13,6 +13,8 @@ describe("recordingFetch", () => {
     expect(await res.json()).toEqual({ a: 1 });
     const files = await readdir(dir);
     expect(files).toEqual(["x_test_v0_item_1_json"]);
-    expect(JSON.parse(await readFile(path.join(dir, files[0]!), "utf8"))).toEqual({ a: 1 });
+    expect(
+      JSON.parse(await readFile(path.join(dir, files[0]!), "utf8")),
+    ).toEqual({ a: 1 });
   });
 });

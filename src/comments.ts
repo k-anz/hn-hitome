@@ -10,7 +10,10 @@ export type CommentFormatOptions = {
 };
 
 /** コメントツリーを、インデントで階層を表したテキストにする（LLM への入力用） */
-export function formatComments(comments: CommentNode[], opts: CommentFormatOptions): string {
+export function formatComments(
+  comments: CommentNode[],
+  opts: CommentFormatOptions,
+): string {
   const lines: string[] = [];
   let length = 0;
   let full = false;

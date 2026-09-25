@@ -4,7 +4,11 @@ import { dayPath } from "./digest";
 import { renderDayHtml, renderIndexHtml, renderJson } from "./render";
 import { Digest, digestJsonSchema } from "./schema";
 
-async function writeText(dir: string, relPath: string, content: string): Promise<void> {
+async function writeText(
+  dir: string,
+  relPath: string,
+  content: string,
+): Promise<void> {
   const file = path.join(dir, relPath);
   await mkdir(path.dirname(file), { recursive: true });
   await writeFile(file, content);
@@ -18,13 +22,19 @@ export async function readArchive(dir: string): Promise<Digest[]> {
     .map((f) => f.split(path.sep).join("/"))
     .filter((f) => DAY_JSON.test(f));
   const digests = await Promise.all(
-    files.map(async (f) => Digest.parse(JSON.parse(await readFile(path.join(dir, f), "utf8")))),
+    files.map(async (f) =>
+      Digest.parse(JSON.parse(await readFile(path.join(dir, f), "utf8"))),
+    ),
   );
   return digests.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export async function writeSchema(dir: string): Promise<void> {
-  await writeText(dir, "schema.json", `${JSON.stringify(digestJsonSchema(), null, 2)}\n`);
+  await writeText(
+    dir,
+    "schema.json",
+    `${JSON.stringify(digestJsonSchema(), null, 2)}\n`,
+  );
 }
 
 export async function publish(dir: string, digest: Digest): Promise<void> {

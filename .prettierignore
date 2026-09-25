@@ -1,3 +1,5 @@
 public/
 tmp/
 test/fixtures/
+docs/
+spec/

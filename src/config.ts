@@ -17,7 +17,9 @@ export function loadConfig(env: Env = process.env): Config {
     itemCount: Number(env.ITEM_COUNT || 3),
     candidateCount: 10,
     model: env.MODEL || "claude-sonnet-5",
-    pagesBaseUrl: (env.PAGES_BASE_URL || "https://k-anz.github.io/hn-hitome").replace(/\/+$/, ""),
+    pagesBaseUrl: (
+      env.PAGES_BASE_URL || "https://k-anz.github.io/hn-hitome"
+    ).replace(/\/+$/, ""),
     fetchTimeoutMs: 10_000,
     maxArticleChars: 20_000,
     comments: { maxTopLevel: 20, maxReplyDepth: 2, maxChars: 30_000 },

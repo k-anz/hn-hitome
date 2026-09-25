@@ -1,10 +1,21 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { chooseSource, extractArticleText, fetchArticleText, MIN_ARTICLE_CHARS } from "../src/article";
+import {
+  chooseSource,
+  extractArticleText,
+  fetchArticleText,
+  MIN_ARTICLE_CHARS,
+} from "../src/article";
 import { fakeFetch } from "./helpers";
 
-const articleHtml = readFileSync(new URL("./fixtures/article.html", import.meta.url), "utf8");
-const html = (body: string) => new Response(body, { headers: { "content-type": "text/html; charset=utf-8" } });
+const articleHtml = readFileSync(
+  new URL("./fixtures/article.html", import.meta.url),
+  "utf8",
+);
+const html = (body: string) =>
+  new Response(body, {
+    headers: { "content-type": "text/html; charset=utf-8" },
+  });
 
 describe("extractArticleText", () => {
   it("実記事の HTML から本文を抜ける", () => {
@@ -13,7 +24,12 @@ describe("extractArticleText", () => {
   });
 
   it("短すぎる本文は null", () => {
-    expect(extractArticleText("<html><body><p>short</p></body></html>", "https://e.test/")).toBeNull();
+    expect(
+      extractArticleText(
+        "<html><body><p>short</p></body></html>",
+        "https://e.test/",
+      ),
+    ).toBeNull();
   });
 });
 
@@ -25,13 +41,18 @@ describe("fetchArticleText", () => {
 
   it("HTML 以外は null", async () => {
     const f = fakeFetch({
-      "https://e.test": () => new Response("%PDF", { headers: { "content-type": "application/pdf" } }),
+      "https://e.test": () =>
+        new Response("%PDF", {
+          headers: { "content-type": "application/pdf" },
+        }),
     });
     expect(await fetchArticleText(f, "https://e.test/a.pdf", 1000)).toBeNull();
   });
 
   it("4xx は null", async () => {
-    expect(await fetchArticleText(fakeFetch({}), "https://e.test/a", 1000)).toBeNull();
+    expect(
+      await fetchArticleText(fakeFetch({}), "https://e.test/a", 1000),
+    ).toBeNull();
   });
 
   it("例外（タイムアウトなど）は null", async () => {
@@ -46,14 +67,23 @@ describe("fetchArticleText", () => {
 
 describe("chooseSource", () => {
   it("本文があれば full（maxChars で切る）", () => {
-    expect(chooseSource("abcdef", "<p>hn", 3)).toEqual({ status: "full", text: "abc" });
+    expect(chooseSource("abcdef", "<p>hn", 3)).toEqual({
+      status: "full",
+      text: "abc",
+    });
   });
 
   it("本文がなく HN のテキストがあれば hn_text", () => {
-    expect(chooseSource(null, "a<p>b", 100)).toEqual({ status: "hn_text", text: "a\n\nb" });
+    expect(chooseSource(null, "a<p>b", 100)).toEqual({
+      status: "hn_text",
+      text: "a\n\nb",
+    });
   });
 
   it("どちらもなければ unavailable", () => {
-    expect(chooseSource(null, null, 100)).toEqual({ status: "unavailable", text: null });
+    expect(chooseSource(null, null, 100)).toEqual({
+      status: "unavailable",
+      text: null,
+    });
   });
 });

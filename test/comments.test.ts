@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { formatComments, type CommentNode } from "../src/comments";
 
-const c = (text: string | null, children: CommentNode[] = []): CommentNode => ({ text, children });
+const c = (text: string | null, children: CommentNode[] = []): CommentNode => ({
+  text,
+  children,
+});
 const opts = { maxTopLevel: 20, maxReplyDepth: 2, maxChars: 10_000 };
 
 describe("formatComments", () => {
@@ -32,6 +35,8 @@ describe("formatComments", () => {
   it("maxChars を超える前で打ち切る", () => {
     const tree = [c("x".repeat(10)), c("y".repeat(10)), c("z".repeat(10))];
     // 1 行 = "- " + 10 文字 = 12 文字 + 改行
-    expect(formatComments(tree, { ...opts, maxChars: 30 })).toBe(`- ${"x".repeat(10)}\n- ${"y".repeat(10)}`);
+    expect(formatComments(tree, { ...opts, maxChars: 30 })).toBe(
+      `- ${"x".repeat(10)}\n- ${"y".repeat(10)}`,
+    );
   });
 });

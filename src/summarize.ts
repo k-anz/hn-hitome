@@ -24,7 +24,8 @@ export const SYSTEM_PROMPT = `あなたは Hacker News の話題を日本語で�
 
 export function buildUserPrompt(input: SummarizeInput): string {
   const article =
-    input.articleText ?? "（本文は取得できませんでした。タイトルとコメントから内容を推測してください）";
+    input.articleText ??
+    "（本文は取得できませんでした。タイトルとコメントから内容を推測してください）";
   return [
     `<title>${input.title}</title>`,
     `<article source="${input.sourceStatus}">\n${article}\n</article>`,
@@ -32,9 +33,14 @@ export function buildUserPrompt(input: SummarizeInput): string {
   ].join("\n\n");
 }
 
-export function extractSummary(res: { stop_reason: string | null; parsed_output: Summary | null }): Summary {
-  if (res.stop_reason !== "end_turn") throw new Error(`summarize failed: stop_reason=${res.stop_reason}`);
-  if (!res.parsed_output) throw new Error("summarize failed: could not parse output");
+export function extractSummary(res: {
+  stop_reason: string | null;
+  parsed_output: Summary | null;
+}): Summary {
+  if (res.stop_reason !== "end_turn")
+    throw new Error(`summarize failed: stop_reason=${res.stop_reason}`);
+  if (!res.parsed_output)
+    throw new Error("summarize failed: could not parse output");
   return res.parsed_output;
 }
 
@@ -51,7 +57,9 @@ export function createClaudeSummarizer(
       messages: [{ role: "user", content: buildUserPrompt(input) }],
       output_config: { effort: "medium", format: zodOutputFormat(Summary) },
     });
-    log(`  tokens: in=${res.usage.input_tokens} out=${res.usage.output_tokens}`);
+    log(
+      `  tokens: in=${res.usage.input_tokens} out=${res.usage.output_tokens}`,
+    );
     return extractSummary(res);
   };
 }

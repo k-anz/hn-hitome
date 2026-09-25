@@ -10,7 +10,12 @@ const item: GeneratedItem = {
   summary: { titleJa: "タ", summaryJa: "要", discussionPointsJa: ["論"] },
   sourceStatus: "hn_text",
 };
-const digestAt = (iso: string) => buildDigest({ now: new Date(iso), baseUrl: "https://u.github.io/hn", items: [item] });
+const digestAt = (iso: string) =>
+  buildDigest({
+    now: new Date(iso),
+    baseUrl: "https://u.github.io/hn",
+    items: [item],
+  });
 
 describe("publish", () => {
   it("日付ファイル・latest・index・schema を書く", async () => {
@@ -18,11 +23,21 @@ describe("publish", () => {
     const d = digestAt("2026-09-25T10:00:00Z");
     await publish(dir, d);
 
-    expect(JSON.parse(await readFile(path.join(dir, "latest.json"), "utf8"))).toEqual(d);
-    expect(JSON.parse(await readFile(path.join(dir, "2026/09/25.json"), "utf8"))).toEqual(d);
-    expect(await readFile(path.join(dir, "2026/09/25.html"), "utf8")).toContain("今日はおしまい");
-    expect(await readFile(path.join(dir, "index.html"), "utf8")).toContain("2026/09/25.html");
-    expect(JSON.parse(await readFile(path.join(dir, "schema.json"), "utf8"))).toHaveProperty("properties");
+    expect(
+      JSON.parse(await readFile(path.join(dir, "latest.json"), "utf8")),
+    ).toEqual(d);
+    expect(
+      JSON.parse(await readFile(path.join(dir, "2026/09/25.json"), "utf8")),
+    ).toEqual(d);
+    expect(await readFile(path.join(dir, "2026/09/25.html"), "utf8")).toContain(
+      "今日はおしまい",
+    );
+    expect(await readFile(path.join(dir, "index.html"), "utf8")).toContain(
+      "2026/09/25.html",
+    );
+    expect(
+      JSON.parse(await readFile(path.join(dir, "schema.json"), "utf8")),
+    ).toHaveProperty("properties");
   });
 
   it("同じ日の再実行は上書き、別の日は index に積み上がる（新しい順）", async () => {
@@ -37,6 +52,8 @@ describe("publish", () => {
     expect(await readdir(path.join(dir, "2026/09"))).toHaveLength(4);
 
     const index = await readFile(path.join(dir, "index.html"), "utf8");
-    expect(index.indexOf("2026-09-25")).toBeLessThan(index.indexOf("2026-09-24"));
+    expect(index.indexOf("2026-09-25")).toBeLessThan(
+      index.indexOf("2026-09-24"),
+    );
   });
 });

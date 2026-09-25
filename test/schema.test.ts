@@ -52,7 +52,9 @@ describe("Digest", () => {
   });
 
   it("JSON Schema を生成できる", () => {
-    const schema = digestJsonSchema() as { properties: Record<string, unknown> };
+    const schema = digestJsonSchema() as {
+      properties: Record<string, unknown>;
+    };
     expect(Object.keys(schema.properties)).toEqual(
       expect.arrayContaining(["schemaVersion", "date", "items"]),
     );
