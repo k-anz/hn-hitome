@@ -1,0 +1,29 @@
+{
+  "name": "hn-hitome",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "tsx src/main.ts",
+    "schema": "tsx scripts/schema.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.128.0",
+    "@mozilla/readability": "^0.6.0",
+    "jsdom": "^29.1.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^26.6.2",
+    "prettier": "^3.9.9",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
