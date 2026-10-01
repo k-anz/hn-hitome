@@ -26,7 +26,7 @@ Actions からの Claude API 呼び出しは、API キーではなく OIDC（Wor
 3. Claude Console → Workload identity
    - issuer: `https://token.actions.githubusercontent.com`（JWKS は issuer URL から自動取得）
    - サービスアカウントを作り、ルールに紐づける
-   - ルールの subject パターン: `repo:k-anz/hn-hitome:environment:github-pages`
+   - ルールの subject パターン: `repo:k-anz@8257557/hn-hitome@1387548572:environment:github-pages`（このリポジトリは immutable subject なので、所有者とリポジトリの数値 ID が入る。`gh api repos/k-anz/hn-hitome/actions/oidc/customization/sub` で確認できる）
 4. Settings → Secrets and variables → Actions → Variables
    - `ANTHROPIC_FEDERATION_RULE_ID`（`fdrl_...`）
    - `ANTHROPIC_ORGANIZATION_ID`
