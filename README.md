@@ -31,7 +31,8 @@ Actions からの Claude API 呼び出しは、API キーではなく OIDC（Wor
    - `ANTHROPIC_FEDERATION_RULE_ID`（`fdrl_...`）
    - `ANTHROPIC_ORGANIZATION_ID`
    - `ANTHROPIC_SERVICE_ACCOUNT_ID`（`svac_...`）
-   - `ANTHROPIC_OIDC_AUDIENCE`（ルールで audience を指定した場合だけ。未設定なら GitHub の既定値）
+   - `ANTHROPIC_WORKSPACE_ID`（`wrkspc_...`）
+   - `ANTHROPIC_OIDC_AUDIENCE`: `https://api.anthropic.com`（Console の GitHub Actions ウィザードで作ったルールが期待する値。未設定だと GitHub の既定値になり `jwt_audience_mismatch` で失敗する）
    - `PAGES_BASE_URL`（例: `https://k-anz.github.io/hn-hitome`。未設定ならこれが既定値）
 5. Actions → daily digest → Run workflow で一度手動実行する
 
