@@ -27,9 +27,25 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Claude API は API キーではなく OIDC（Workload Identity Federation）で認証する。
+      # GitHub の ID トークンをファイルに書き、SDK に ANTHROPIC_IDENTITY_TOKEN_FILE で渡す。
+      # ANTHROPIC_API_KEY は空でも設定されていると OIDC より優先されるので、ここでは一切渡さない。
+      - name: Get OIDC token for Claude API
+        uses: actions/github-script@v8
+        env:
+          AUDIENCE: ${{ vars.ANTHROPIC_OIDC_AUDIENCE }}
+        with:
+          script: |
+            const fs = require("node:fs");
+            const token = await core.getIDToken(process.env.AUDIENCE || undefined);
+            const file = `${process.env.RUNNER_TEMP}/anthropic-oidc-token`;
+            fs.writeFileSync(file, token, { mode: 0o600 });
+            core.exportVariable("ANTHROPIC_IDENTITY_TOKEN_FILE", file);
       - run: npm run generate
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
           PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}
       - name: Commit generated files
         run: |
